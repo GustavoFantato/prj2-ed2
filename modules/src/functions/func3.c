@@ -9,7 +9,6 @@
 -> Registros marcados como logicamente removidos nao devem ser exibidos
 */
 
-
 void listTableWhere(char *arquivoEntrada, int n) {
     
     // Abertura do arquivo binario para leitura
@@ -38,10 +37,15 @@ void listTableWhere(char *arquivoEntrada, int n) {
         // Campos e valores a serem comparados 
         char campos[8][30];
         char valores[8][100];
+        int foundCodEst = 0;
         
         // Loop para ler os campos e valores, de acordo com o 'm' lido 
         for (int j = 0; j < m; j++) {
             scanf("%s", campos[j]); 
+
+            if (strcmp(campos[j], "codEstacao") == 0) {
+                foundCodEst = 1; 
+            }
 
             // Se o campo for nomeEstacao ou nomeLinha, utiliza-se a funcao dada ScanQuoteString()
             if (strcmp(campos[j], "nomeEstacao") == 0 || strcmp(campos[j], "nomeLinha") == 0) {
@@ -60,10 +64,8 @@ void listTableWhere(char *arquivoEntrada, int n) {
         // Posiciona o ponteiro no inicio dos registros, apos o header
         fseek(binFile, HEADER_SIZE, SEEK_SET);
 
-
         int foundReg = 0; // Bool para controle de registro encontrado ou nao
         char removed; // armazenar o campo se o registro foi removido ou nao
-
 
         // Enquanto nao chegar ao fim do arquivo, le-se o campo de removido para verificar se o registro esta ativo ou nao.    
         while (fread(&removed, sizeof(char), 1, binFile) == 1) {
@@ -88,7 +90,6 @@ void listTableWhere(char *arquivoEntrada, int n) {
 
             // Loop para comparar os campos lidos com os campos de busca, verificando se o registro atual do arquivo binario corresponde aos criterios de busca
             for (int f = 0; f < m; f++) {
-                    
                 checkMatch(data, campos, f, valores, &match);
                 
                 // Se nao der match, quebra o loop, evitando comparacoes desnecessarias
@@ -97,16 +98,25 @@ void listTableWhere(char *arquivoEntrada, int n) {
 
             // Se deu match, registro foi encontrado, printa os campos do registro
             if (match == 1) {
-            
-            foundReg = 1;
-            printRegistro(data);
+                foundReg = 1;
+                printRegistro(data);
+                
+                // Libera a memoria alocada pelas strings antes do break ou fim do laco
+                if (data.nomeEstacao != NULL) free(data.nomeEstacao);
+                if (data.nomeLinha != NULL) free(data.nomeLinha);
 
-            // Liberacao das memorias dos campos variaveis
-            if (data.nomeEstacao != NULL) free(data.nomeEstacao);
-            if (data.nomeLinha != NULL) free(data.nomeLinha);
+                // Se a busca tinha o ID unico e ele deu match, para a busca imediatamente
+                if (foundCodEst) {
+                    break; 
+                }
+            } else {
+                // se nao deu match tambem precisa liberar a memoria
+                if (data.nomeEstacao != NULL) free(data.nomeEstacao);
+                if (data.nomeLinha != NULL) free(data.nomeLinha);
+            }
         }
 
-        // Se nao encontrou registro, printa a mensagem
+        // Se nao encontrou nenhum registro APÓS percorrer o arquivo todo, printa a mensagem
         if (!foundReg) {
             printf("Registro inexistente.\n");
         }
@@ -119,6 +129,4 @@ void listTableWhere(char *arquivoEntrada, int n) {
 
     // Fecha o arquivo
     fclose(binFile);
-}
-
 }
