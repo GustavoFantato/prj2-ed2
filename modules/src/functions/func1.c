@@ -2,7 +2,7 @@
 #include "utils.h"
 
 /*
-# FUNCIONALIDADE [1] - Criacao do arquivo binario a partir do CSV #
+# FUNCIONALIDADE [1] - Criacao do arquivo binario a partir do CSV estacoes #
 
 -> Leitura de varios registros obtidos a partir de um arquivo de entrada .csv e armazenamento desses registros em um arquivo de dados binário
 */
@@ -69,7 +69,7 @@ void createTable(char *arquivoEntrada, char *arquivoSaida) {
         char *lineCopy = strdup(line);
         char *ptr = lineCopy; // Ponteiro para iterar sobre a linha
 
-        for (int i = 0; i < REGISTER_QTD; i++){ // Loop para ler cada field da linha
+        for (int i = 0; i < DATA_REGISTER_QTD; i++){ // Loop para ler cada field da linha
             char *field = strsep(&ptr, ",");
             if (field != NULL) {
                 field[strcspn(field, "\r\n")] = '\0'; // encontra o indice onde possa haver um \r ou \n e substitui por \0
@@ -100,7 +100,7 @@ void createTable(char *arquivoEntrada, char *arquivoSaida) {
         }
 
         // Tratamento do lixo, escrevendo '$' nos bytes nao utilizados
-        int garbageBytes = REGISTER_SIZE - (FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
+        int garbageBytes = DATA_REGISTER_SIZE - (DATA_FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
         for(int i = 0; i < garbageBytes; i++){
             fputc('$', binFile); 
         }

@@ -52,7 +52,7 @@ void listTable(char *arquivoEntrada) {
         lerRegistro(&data, binFile);
 
         // Guardar a quantidade de bytes de lixo
-        int garbageBytes = REGISTER_SIZE - (FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
+        int garbageBytes = DATA_REGISTER_SIZE - (DATA_FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
         fseek(binFile, garbageBytes, SEEK_CUR); // Posiciona o ponteiro para o inicio do proximo registro, pulando o lixo
 
         // Prints dos campos do registro

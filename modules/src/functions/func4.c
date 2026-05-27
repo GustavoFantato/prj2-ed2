@@ -26,7 +26,7 @@ void listTableRRN(char *arquivoEntrada, int RRN) {
     }
 
     // Calculo do byte offset a partir do RRN, para colocar o ponteiro no inicio do registro a ser buscado
-    int byteOffset = HEADER_SIZE + (RRN * REGISTER_SIZE);
+    int byteOffset = DATA_HEADER_SIZE + (RRN * DATA_REGISTER_SIZE);
     fseek(binFile, byteOffset, SEEK_SET);
 
     // Leitura e verificacao se o registro foi removido ou nao

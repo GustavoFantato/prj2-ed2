@@ -62,7 +62,7 @@ void listTableWhere(char *arquivoEntrada, int n) {
         }
 
         // Posiciona o ponteiro no inicio dos registros, apos o header
-        fseek(binFile, HEADER_SIZE, SEEK_SET);
+        fseek(binFile, DATA_HEADER_SIZE, SEEK_SET);
 
         int foundReg = 0; // Bool para controle de registro encontrado ou nao
         char removed; // armazenar o campo se o registro foi removido ou nao
@@ -83,7 +83,7 @@ void listTableWhere(char *arquivoEntrada, int n) {
             lerRegistro(&data, binFile);
 
             // Guardar a quantidade de bytes de lixo, para posicionar o ponteiro no inicio do proximo registro
-            int garbageBytes = REGISTER_SIZE - (FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
+            int garbageBytes = DATA_REGISTER_SIZE - (DATA_FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
             fseek(binFile, garbageBytes, SEEK_CUR);
 
             int match = 1; 

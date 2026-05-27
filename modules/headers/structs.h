@@ -1,11 +1,20 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-#define REGISTER_SIZE 80 // Tamanho total dos registros de dados
-#define HEADER_SIZE 17 // Tamanho total do registro de cabecalho        
-#define FIX_SIZE_FIELDS 37 // Tamanho total dos campos de tamanho fixo
-#define REGISTER_QTD 8 // Quantidade campos de cada registro de dados
+// Arquivo de dados principal (estacoes.csv)
+#define DATA_REGISTER_SIZE 80 // Tamanho total dos registros de dados
+#define DATA_HEADER_SIZE 17 // Tamanho total do registro de cabecalho        
+#define DATA_FIX_SIZE_FIELDS 37 // Tamanho total dos campos de tamanho fixo
+#define DATA_REGISTER_QTD 8 // Quantidade campos de cada registro de dados
 
+// Arquivo index
+#define INDEX_HEADER_SIZE 1 // Tamanho do cabecalho do arq index
+#define INDEX_REGISTER_SIZE 8 // Tamanho do registro de dados do arq index
+
+
+// --== @ ==-- 
+// PARTE 1 DO TRABALHO
+// --== @ ==-- 
 
 /*
  # Registro de cabecalho - 17 bytes totais #
@@ -65,5 +74,34 @@ typedef struct par {
     int orig; // origem (CodEstacao)
     int dest; // destino (CodProxEstacao)
 } Par;
+
+
+
+// --== @ ==-- 
+// PARTE 2 DO TRABALHO
+// --== @ ==-- 
+ 
+/*
+ # Struct do registro de cabecalho do IndexaEstacao
+ | status: consistencia do arquivo
+    - '0' quando o arquivo de dados esta inconsistente 
+    - '1' quando consistente
+    - Ao se abrir um arquivo para escrita deve ser '0', ao finalizar, deve ser '1'
+*/
+typedef struct indexheader{
+    char status; // consistencia do arquivo
+} IndexHeader;
+
+
+/*
+ # Struct do registro de dados do IndexaEstacao
+  | codEstacao: codigo sequencial que identifica (codigo unitario) cada registro de estacao do estacoes.csv 
+  | RRN: RRN do registro de dados que se refere ao codEstacao
+*/
+typedef struct indexdata{ // deve seguir essa ordem 
+    int codEstacao; // nao pode ser null. Deve ser ordenado de forma crescente
+    int RRN; // nao pode ser null
+} IndexRecord;
+
 
 #endif
