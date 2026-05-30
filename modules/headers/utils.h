@@ -39,4 +39,10 @@ int checkStringMatch(char *data_string, char *valor_busca);
 void checkMatch(DataRecord data, char campos[][30], int f, char valores[][100], int *match);
 
 
+
+// Utilizadas na funcionalidade [5]
+
+int compairRegisters(const void *a, const void *b);
+
+
 #endif

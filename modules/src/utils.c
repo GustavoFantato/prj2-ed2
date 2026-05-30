@@ -285,3 +285,18 @@ void checkMatch(DataRecord data, char campos[][30], int f, char valores[][100], 
     }
     
 }
+
+
+
+// Usadas na funcionalidade [5]
+
+// Funcao usada para o qsort() conseguir aplicar a logica de ordenacao dele
+int compairRegisters(const void *a, const void *b){
+
+    // Criamos dois ponteiros para forçarmos os genericos a serem do tipo struct do indexRecord
+
+    IndexRecord *registerA = (IndexRecord *) a;
+    IndexRecord *registerB = (IndexRecord *) b;
+
+    return registerA->codEstacao - registerB->codEstacao; 
+}

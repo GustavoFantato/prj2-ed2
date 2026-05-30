@@ -98,7 +98,7 @@ typedef struct indexheader{
   | codEstacao: codigo sequencial que identifica (codigo unitario) cada registro de estacao do estacoes.csv 
   | RRN: RRN do registro de dados que se refere ao codEstacao
 */
-typedef struct indexdata{ // deve seguir essa ordem 
+typedef struct indexRecord{ // deve seguir essa ordem 
     int codEstacao; // nao pode ser null. Deve ser ordenado de forma crescente
     int RRN; // nao pode ser null
 } IndexRecord;
