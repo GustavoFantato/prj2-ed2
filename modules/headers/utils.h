@@ -45,4 +45,8 @@ void checkMatch(DataRecord data, char campos[][30], int f, char valores[][100], 
 int compairRegisters(const void *a, const void *b);
 
 
+// Utilizadas na funcionalidade [6]
+
+int getRRNIndexFile(char *arquivoIndex, int codEstacao);
+
 #endif

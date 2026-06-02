@@ -300,3 +300,33 @@ int compairRegisters(const void *a, const void *b){
 
     return registerA->codEstacao - registerB->codEstacao; 
 }
+
+
+
+// Usadas na funcionalidade[6]
+
+int getRRNIndexFile(char *arquivoIndex, int codEstacao){
+    
+    FILE *indexFile = fopen(arquivoIndex, "rb"); // abre arquivo index
+    
+    // Checando consistencia do arquivo index
+    char status;
+    fread(&status, sizeof(char), 1, indexFile);
+    if(status == '0'){
+        fclose(indexFile);
+        return -2;
+    }
+
+    IndexRecord reg; // Aloca struct de register
+    while(fread(&reg, sizeof(IndexRecord), 1, indexFile) == 1){ // Ja le e atribui os valores a struct do register
+        if(reg.codEstacao == codEstacao){ // Encontramos o codEstacao desejado, retorna o RRN
+            fclose(indexFile);
+            return reg.RRN;
+        }
+    }
+
+    // Se saiu do while, nao temos estacao com esse codigo
+    fclose(indexFile);
+    return -1; // valor nao encontrado 
+
+}
