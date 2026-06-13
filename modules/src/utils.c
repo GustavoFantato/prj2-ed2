@@ -330,3 +330,24 @@ int getRRNIndexFile(char *arquivoIndex, int codEstacao){
     return -1; // valor nao encontrado 
 
 }
+
+// Utilizado para rodar no Windows
+char *custom_strsep(char **stringp, const char *delim) {
+    char *start = *stringp;
+    char *p;
+
+    if (start == NULL) {
+        return NULL;
+    }
+
+    // Procura a primeira ocorrência de qualquer caractere do delimitador
+    p = strpbrk(start, delim);
+    if (p) {
+        *p = '\0'; // Substitui o delimitador por fim de string
+        *stringp = p + 1; // Avança o ponteiro para o próximo token
+    } else {
+        *stringp = NULL; // Chegou no final da string
+    }
+
+    return start;
+}

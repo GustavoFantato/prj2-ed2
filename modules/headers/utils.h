@@ -49,4 +49,7 @@ int compairRegisters(const void *a, const void *b);
 
 int getRRNIndexFile(char *arquivoIndex, int codEstacao);
 
+// Utilizado para rodar no Windows REMOVER APOS TESTE
+char *custom_strsep(char **stringp, const char *delim);
+
 #endif

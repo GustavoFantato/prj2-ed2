@@ -117,12 +117,14 @@ void listTableWhereIndex(char *arquivoDados, char *arquivoIndex, int n){
 
             // Posiciona ponteiro no registro desejado, de acordo com o RRN
             fseek(binFile, (DATA_HEADER_SIZE + (RRN * DATA_REGISTER_SIZE)),SEEK_SET);
-
-            // Ja que achamos pelo indexFile, sabemos que o registro nao esta removido. Nao eh necessario verificar
+           
+            //LER byte do 'removido' para verificar se o registro esta ativo ou nao. Ja que achamos pelo indexFile, sabemos que o registro nao esta removido. Nao eh necessario verificar, mas lemos mesmo assim para posicionar o ponteiro no byte correto para ler o resto do registro
+            char removed;
+            fread(&removed, sizeof(char), 1, binFile);
 
             DataRecord data;
+            data.removido = removed; // Inicializa a struct corretamente para evitar lixo
             lerRegistro(&data, binFile);
-
             int match = 1;
 
             for (int f = 0; f < m; f++) {

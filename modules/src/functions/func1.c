@@ -70,7 +70,7 @@ void createTable(char *arquivoEntrada, char *arquivoSaida) {
         char *ptr = lineCopy; // Ponteiro para iterar sobre a linha
 
         for (int i = 0; i < DATA_REGISTER_QTD; i++){ // Loop para ler cada field da linha
-            char *field = strsep(&ptr, ",");
+            char *field = custom_strsep(&ptr, ",");
             if (field != NULL) {
                 field[strcspn(field, "\r\n")] = '\0'; // encontra o indice onde possa haver um \r ou \n e substitui por \0
                 switchDataRecord(&data, i, field); // switch para associar o indice com o campo lido no momento, atribuindo esse valor a struct do datarecord
