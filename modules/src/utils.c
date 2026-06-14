@@ -331,23 +331,50 @@ int getRRNIndexFile(char *arquivoIndex, int codEstacao){
 
 }
 
-// Utilizado para rodar no Windows
-char *custom_strsep(char **stringp, const char *delim) {
-    char *start = *stringp;
-    char *p;
+// Usadas na funcionalidade[7]
 
-    if (start == NULL) {
-        return NULL;
+int verifyName(FILE *binFile, const char *nomeBuscado, long offsetIgnorado) {
+
+    if (nomeBuscado == NULL) return 0;
+
+    int exist = 0;
+
+    long posAtual = ftell(binFile);
+    fseek(binFile, DATA_HEADER_SIZE, SEEK_SET);
+
+
+    char removed;
+    while (fread(&removed, sizeof(char), 1, binFile) == 1) {
+
+        long currentOffset = ftell(binFile) - 1;
+
+        if (removed == '1' || currentOffset == offsetIgnorado) {
+            fseek(binFile, DATA_REGISTER_SIZE - 1, SEEK_CUR);
+            continue;
+        }
+
+        DataRecord data;
+        data.removido = removed;
+
+        lerRegistro(&data, binFile);
+
+        int garbageBytes = DATA_REGISTER_SIZE - (DATA_FIX_SIZE_FIELDS + data.tamNomeEstacao + data.tamNomeLinha);
+
+        fseek(binFile, garbageBytes, SEEK_CUR);
+
+        if (data.nomeEstacao != NULL && strcmp(data.nomeEstacao, nomeBuscado) == 0) {
+            exist = 1;
+            if (data.nomeEstacao != NULL) free(data.nomeEstacao);
+            if (data.nomeLinha != NULL) free(data.nomeLinha);
+            break;
+        }
+
+
+        if (data.nomeEstacao != NULL) free(data.nomeEstacao);
+        if (data.nomeLinha != NULL) free(data.nomeLinha);
     }
 
-    // Procura a primeira ocorrência de qualquer caractere do delimitador
-    p = strpbrk(start, delim);
-    if (p) {
-        *p = '\0'; // Substitui o delimitador por fim de string
-        *stringp = p + 1; // Avança o ponteiro para o próximo token
-    } else {
-        *stringp = NULL; // Chegou no final da string
-    }
+    fseek(binFile, posAtual, SEEK_SET);
 
-    return start;
+    return exist;
 }

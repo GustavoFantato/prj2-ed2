@@ -41,15 +41,14 @@ void checkMatch(DataRecord data, char campos[][30], int f, char valores[][100], 
 
 
 // Utilizadas na funcionalidade [5]
-
 int compairRegisters(const void *a, const void *b);
 
 
 // Utilizadas na funcionalidade [6]
-
 int getRRNIndexFile(char *arquivoIndex, int codEstacao);
 
-// Utilizado para rodar no Windows REMOVER APOS TESTE
-char *custom_strsep(char **stringp, const char *delim);
+// Utilizadas na funcionalidade [7]
+int verifyName(FILE *binFile, const char *nomeBuscado, long offsetIgnorado);
+        
 
 #endif
