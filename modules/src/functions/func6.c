@@ -44,7 +44,7 @@ void listTableWhereIndex(char *arquivoDados, char *arquivoIndex, int n){
             if (strcmp(campos[j], "codEstacao") == 0) {
                 useIndexFile = 1;
                 indiceCodEst = j;
-            }     
+            }
 
             // Se o campo for nomeEstacao ou nomeLinha, utiliza-se a funcao dada ScanQuoteString()
             if (strcmp(campos[j], "nomeEstacao") == 0 || strcmp(campos[j], "nomeLinha") == 0) {
